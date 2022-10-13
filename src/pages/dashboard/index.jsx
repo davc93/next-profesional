@@ -1,6 +1,6 @@
 import useFetch from "hooks/useFetch";
 import endPoints from "services/api";
-import { Chart } from "common/Chart";
+import Chart from "common/Chart";
 
 const PRODUCT_LIMIT = 60;
 const PRODUCT_OFFSET = 60;

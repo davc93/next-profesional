@@ -1,4 +1,5 @@
 import LoginPage from 'components/LoginPage';
+
 const login = () => (
   <LoginPage />
 );
