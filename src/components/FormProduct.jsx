@@ -1,7 +1,9 @@
+import { useRouter } from 'next/router';
 import { useRef } from 'react';
-
-export default function FormProduct() {
+import { addProduct, updateProduct } from 'services/api/products';
+export default function FormProduct({ setAlert, setOpen, product }) {
   const formRef = useRef(null);
+  const router = useRouter()
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -13,11 +15,40 @@ export default function FormProduct() {
       categoryId: parseInt(formData.get('category')),
       images: [formData.get('images').name],
     };
-    console.log(data);
+
+
+    if (product) {
+      console.log(data)
+      updateProduct(product.id,data)
+        .then((response)=>{
+          router.push('/dashboard/products/')
+        })
+    } else {
+
+      addProduct(data).then(() => {
+        setAlert({
+          active: true,
+          message: 'product add succesfully',
+          type: 'success',
+          autoClose: false
+        });
+        setOpen(false);
+      }).catch((error) => {
+        setAlert({
+          active: true,
+          message: error.message,
+          type: 'error',
+          autoClose: false
+        })
+      })
+
+    }
+
   };
 
+
   return (
-    <form>
+    <form ref={formRef} onSubmit={handleSubmit}>
       <div className="overflow-hidden">
         <div className="px-4 py-5 bg-white sm:p-6">
           <div className="grid grid-cols-6 gap-6">
@@ -32,6 +63,7 @@ export default function FormProduct() {
                 type="text"
                 name="title"
                 id="title"
+                defaultValue={product?.title}
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -45,6 +77,7 @@ export default function FormProduct() {
               <input
                 type="number"
                 name="price"
+                defaultValue={product?.price}
                 id="price"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
@@ -57,6 +90,7 @@ export default function FormProduct() {
                 Category
               </label>
               <select
+                defaultValue={product?.category}
                 id="category"
                 name="category"
                 autoComplete="category-name"
@@ -78,6 +112,7 @@ export default function FormProduct() {
                 Description
               </label>
               <textarea
+                defaultValue={product?.description}
                 name="description"
                 id="description"
                 autoComplete="description"
@@ -113,6 +148,7 @@ export default function FormProduct() {
                       >
                         <span>Upload a file</span>
                         <input
+                          defaultValue={product?.images}
                           id="images"
                           name="images"
                           type="file"
