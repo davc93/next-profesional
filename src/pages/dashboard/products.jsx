@@ -19,7 +19,7 @@ const products = () => {
                         List of Products
                     </h2>
                 </div>
-                <div className="mt-5 flex lg:mt-0 lg:ml-4">
+                <div className="mt-5 flex lg:mt-2 lg:mb-2 lg:ml-4">
 
 
                     <span className="sm:ml-3">
